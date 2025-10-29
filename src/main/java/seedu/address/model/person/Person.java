@@ -105,6 +105,26 @@ public class Person {
     }
 
     /**
+     * Constructor with linked persons for clients, preserving budget.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
+                  Set<Tag> tags, Set<Person> linkedPersons, Price price, Budget budget, Optional<Partner> partner) {
+        requireAllNonNull(name, phone, email, address, weddingDate, tags, linkedPersons);
+        checkArgument(isValidTagsForType(type, tags), MSG_TAGS_FORBIDDEN_FOR_CLIENT);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.weddingDate = weddingDate;
+        this.type = type;
+        this.tags.addAll(tags);
+        this.price = price;
+        this.linkedPersons.addAll(linkedPersons);
+        this.budget = budget;
+        this.partner = partner;
+    }
+
+    /**
      * Constructor with linked persons for vendors.
      */
     public Person(Name name, Phone phone, Email email, Address address, PersonType type,

@@ -104,7 +104,20 @@ public class EditCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
+        // Replace the edited person, preserving their links on the edited instance
         model.setPerson(personToEdit, editedPerson);
+
+        // After replacing the person, update all counterparts that link to the old person
+        // so that their link sets point to the edited person instead of the old instance.
+        for (Person other : model.getAddressBook().getPersonList()) {
+            if (other.equals(editedPerson)) {
+                continue; // skip the edited person itself
+            }
+            if (other.isLinkedTo(personToEdit)) {
+                Person updatedOther = removeAndAddLink(other, personToEdit, editedPerson);
+                model.setPerson(other, updatedOther);
+            }
+        }
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
     }
@@ -155,12 +168,54 @@ public class EditCommand extends Command {
             throw new CommandException(Person.MSG_TAGS_FORBIDDEN_FOR_CLIENT);
         }
 
+        Set<Person> existingLinks = personToEdit.getLinkedPersons();
+
         if (updatedType == PersonType.VENDOR) {
+            // Preserve existing links for vendors
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedType, updatedTags,
-                    updatedPrice);
+                    new java.util.HashSet<>(existingLinks), updatedPrice);
         } else {
+            // Preserve existing links for clients and keep budget/partner
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
-                    updatedType, updatedTags, updatedPrice, updatedBudget, updatedPartner);
+                    updatedType, updatedTags, new java.util.HashSet<>(existingLinks), updatedPrice, updatedBudget,
+                    updatedPartner);
+        }
+    }
+
+    /**
+     * Returns a copy of {@code original} with {@code oldLink} replaced by {@code newLink} in its linked persons set.
+     * Preserves all other fields, including budget for clients and price for vendors.
+     */
+    private static Person removeAndAddLink(Person original, Person oldLink, Person newLink) {
+        java.util.Set<Person> updatedLinks = new java.util.HashSet<>(original.getLinkedPersons());
+        updatedLinks.remove(oldLink);
+        updatedLinks.add(newLink);
+
+        if (original.getType() == PersonType.VENDOR) {
+            return new Person(
+                    original.getName(),
+                    original.getPhone(),
+                    original.getEmail(),
+                    original.getAddress(),
+                    original.getType(),
+                    original.getTags(),
+                    updatedLinks,
+                    original.getPrice().orElse(null)
+            );
+        } else {
+            return new Person(
+                    original.getName(),
+                    original.getPhone(),
+                    original.getEmail(),
+                    original.getAddress(),
+                    original.getWeddingDate().orElse(null),
+                    original.getType(),
+                    original.getTags(),
+                    updatedLinks,
+                    original.getPrice().orElse(null),
+                    original.getBudget().orElse(null),
+                    original.getPartner()
+            );
         }
     }
 
