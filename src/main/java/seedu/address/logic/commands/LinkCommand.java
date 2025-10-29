@@ -79,7 +79,7 @@ public class LinkCommand extends Command {
             throw new CommandException(MESSAGE_INVALID_VENDOR_INDEX);
         }
 
-        // Check if already linked
+        // Check if already linked (by identity/phone)
         if (client.isLinkedTo(vendor)) {
             throw new CommandException(MESSAGE_LINK_ALREADY_EXISTS);
         }
@@ -100,6 +100,8 @@ public class LinkCommand extends Command {
      */
     private Person createPersonWithLink(Person person, Person linkedPerson) {
         Set<Person> updatedLinks = new HashSet<>(person.getLinkedPersons());
+        // Ensure no duplicate by identity before adding
+        updatedLinks.removeIf(p -> p.isSamePerson(linkedPerson));
         updatedLinks.add(linkedPerson);
 
         if (person.getType() == PersonType.VENDOR) {

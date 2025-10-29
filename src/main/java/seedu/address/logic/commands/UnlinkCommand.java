@@ -100,7 +100,8 @@ public class UnlinkCommand extends Command {
      */
     private Person createPersonWithoutLink(Person person, Person linkedPerson) {
         Set<Person> updatedLinks = new HashSet<>(person.getLinkedPersons());
-        updatedLinks.remove(linkedPerson);
+        // Remove by identity/phone to avoid equals/hashCode mismatches
+        updatedLinks.removeIf(p -> p.isSamePerson(linkedPerson));
 
         if (person.getType() == PersonType.VENDOR) {
             return new Person(
