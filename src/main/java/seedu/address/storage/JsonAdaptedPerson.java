@@ -207,12 +207,12 @@ class JsonAdaptedPerson {
 
         // Create a set to hold linked persons (will be populated later in JsonSerializableAddressBook)
         Set<Person> modelLinkedPersons = new HashSet<>();
-        
+
         if (modelType == PersonType.VENDOR) {
-            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelType, 
+            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelType,
                     modelTags, modelLinkedPersons, modelPrice);
         } else {
-            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, 
+            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate,
                     modelType, modelTags, modelLinkedPersons, modelPrice, modelBudget, modelPartner);
         }
     }
