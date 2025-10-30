@@ -5,6 +5,7 @@
 
 <StackPane fx:id="commandBoxRoot" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <TextArea fx:id="commandTextField"
+            styleClass="command-input"
             promptText="Enter command here..."
             wrapText="true"
             prefRowCount="2"

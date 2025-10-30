@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seedu.address.commons.core.GuiSettings;
@@ -12,6 +13,7 @@ import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Person;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -30,6 +32,7 @@ public class MainWindow extends UiPart<Stage> {
     private PersonDetailsPanel personDetailsPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
+    private Person currentlySelectedPerson;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -49,6 +52,9 @@ public class MainWindow extends UiPart<Stage> {
     @FXML
     private StackPane personDetailsPlaceholder;
 
+    @FXML
+    private SplitPane splitPane;
+
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
      */
@@ -63,6 +69,26 @@ public class MainWindow extends UiPart<Stage> {
         setWindowDefaultSize(logic.getGuiSettings());
 
         helpWindow = new HelpWindow();
+    }
+
+
+    @FXML
+    private void initialize() {
+        final double min = 0.40;
+        final double max = 0.60;
+        SplitPane.Divider d = splitPane.getDividers().get(0);
+
+        d.positionProperty().addListener((obs, oldV, newV) -> {
+            double v = newV.doubleValue();
+            if (v < min) {
+                d.setPosition(min);
+            }
+            else if (v > max) {
+                d.setPosition(max);
+            }
+        });
+
+        d.setPosition(Math.max(min, Math.min(max, 0.40)));
     }
 
     public Stage getPrimaryStage() {
@@ -92,7 +118,8 @@ public class MainWindow extends UiPart<Stage> {
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
     }
 
-    private void onPersonSelected(seedu.address.model.person.Person person) {
+    private void onPersonSelected(Person person) {
+        currentlySelectedPerson = person;
         personDetailsPanel.setPerson(person);
     }
 
@@ -159,11 +186,41 @@ public class MainWindow extends UiPart<Stage> {
                 handleExit();
             }
 
+            // Refresh the details panel if a person is currently selected
+            refreshDetailsPanel();
+
             return commandResult;
         } catch (CommandException | ParseException e) {
             logger.info("An error occurred while executing command: " + commandText);
             resultDisplay.setFeedbackToUser(e.getMessage());
             throw e;
+        }
+    }
+
+    /**
+     * Refreshes the person details panel to show the latest data of the currently selected person.
+     * This ensures that any changes made through commands (edit, link, unlink, etc.) are immediately
+     * reflected in the details panel.
+     */
+    private void refreshDetailsPanel() {
+        if (currentlySelectedPerson == null) {
+            return;
+        }
+
+        // Find the updated person object in the filtered list by matching phone number (unique identifier)
+        Person updatedPerson = logic.getFilteredPersonList().stream()
+                .filter(p -> p.getPhone().equals(currentlySelectedPerson.getPhone()))
+                .findFirst()
+                .orElse(null);
+
+        // Update the details panel with the refreshed person data
+        if (updatedPerson != null) {
+            currentlySelectedPerson = updatedPerson;
+            personDetailsPanel.setPerson(updatedPerson);
+        } else {
+            // Person was deleted, clear the details panel
+            currentlySelectedPerson = null;
+            personDetailsPanel.setPerson(null);
         }
     }
 }

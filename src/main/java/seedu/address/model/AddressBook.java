@@ -79,11 +79,78 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Replaces the given person {@code target} in the list with {@code editedPerson}.
      * {@code target} must exist in the address book.
      * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
+     * Also updates all other persons that have {@code target} in their linked persons.
      */
     public void setPerson(Person target, Person editedPerson) {
         requireNonNull(editedPerson);
 
         persons.setPerson(target, editedPerson);
+
+        // Update all persons that have the target in their linkedPersons
+        updateLinkedPersonReferences(target, editedPerson);
+    }
+
+    /**
+     * Updates all persons that have {@code oldPerson} in their linkedPersons to reference {@code newPerson} instead.
+     */
+    private void updateLinkedPersonReferences(Person oldPerson, Person newPerson) {
+        List<Person> personList = persons.asUnmodifiableObservableList();
+
+        for (Person person : personList) {
+            // Skip the person we just updated
+            if (person.isSamePerson(newPerson)) {
+                continue;
+            }
+
+            // Check if this person has the old person in their linked persons
+            if (person.getLinkedPersons().stream().anyMatch(p -> p.isSamePerson(oldPerson))) {
+                // Create a new set with the updated reference
+                java.util.Set<Person> updatedLinkedPersons = new java.util.HashSet<>();
+                for (Person linkedPerson : person.getLinkedPersons()) {
+                    if (linkedPerson.isSamePerson(oldPerson)) {
+                        updatedLinkedPersons.add(newPerson);
+                    } else {
+                        updatedLinkedPersons.add(linkedPerson);
+                    }
+                }
+
+                // Create updated person with new linked persons
+                Person updatedPerson = createPersonWithUpdatedLinks(person, updatedLinkedPersons);
+                persons.setPerson(person, updatedPerson);
+            }
+        }
+    }
+
+    /**
+     * Creates a new Person with updated linked persons, preserving all other fields.
+     */
+    private Person createPersonWithUpdatedLinks(Person person, java.util.Set<Person> updatedLinkedPersons) {
+        if (person.getType() == seedu.address.model.person.PersonType.VENDOR) {
+            return new Person(
+                    person.getName(),
+                    person.getPhone(),
+                    person.getEmail(),
+                    person.getAddress(),
+                    person.getType(),
+                    person.getTags(),
+                    updatedLinkedPersons,
+                    person.getPrice().orElse(null)
+            );
+        } else {
+            return new Person(
+                    person.getName(),
+                    person.getPhone(),
+                    person.getEmail(),
+                    person.getAddress(),
+                    person.getWeddingDate().orElse(null),
+                    person.getType(),
+                    person.getTags(),
+                    updatedLinkedPersons,
+                    person.getPrice().orElse(null),
+                    person.getBudget().orElse(null),
+                    person.getPartner()
+            );
+        }
     }
 
     /**

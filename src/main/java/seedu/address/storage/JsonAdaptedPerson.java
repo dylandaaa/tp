@@ -205,11 +205,15 @@ class JsonAdaptedPerson {
             throw new IllegalValueException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
         }
 
+        // Create a set to hold linked persons (will be populated later in JsonSerializableAddressBook)
+        Set<Person> modelLinkedPersons = new HashSet<>();
+        
         if (modelType == PersonType.VENDOR) {
-            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelType, modelTags, modelPrice);
+            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelType, 
+                    modelTags, modelLinkedPersons, modelPrice);
         } else {
-            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelType, modelTags,
-                    modelPrice, modelBudget, modelPartner);
+            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, 
+                    modelType, modelTags, modelLinkedPersons, modelPrice, modelBudget, modelPartner);
         }
     }
 

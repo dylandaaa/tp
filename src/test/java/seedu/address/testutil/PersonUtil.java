@@ -69,8 +69,6 @@ public class PersonUtil {
         descriptor.getAddress().ifPresent(address -> sb.append(PREFIX_ADDRESS).append(address.value).append(" "));
         descriptor.getWeddingDate().ifPresent(weddingDate -> sb.append(PREFIX_WEDDING_DATE)
             .append(weddingDate.toString()).append(" "));
-        descriptor.getType().ifPresent(type ->
-                sb.append(PREFIX_TYPE).append(type.toString().toLowerCase()).append(" "));
         descriptor.getPrice().ifPresent(price -> sb.append(PREFIX_PRICE).append(price.toString()).append(" "));
         descriptor.getBudget().ifPresent(budget -> sb.append(PREFIX_BUDGET).append(budget.toString()).append(" "));
         descriptor.getPartner().ifPresent(partner -> sb.append(PREFIX_PARTNER).append(partner.value).append(" "));

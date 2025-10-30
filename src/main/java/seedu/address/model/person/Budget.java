@@ -9,8 +9,10 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Budget {
 
-    public static final String MESSAGE_CONSTRAINTS = "Invalid amount. Provide a number or a range like 800-1500. "
-            + "Only digits and hyphens are allowed (no commas or dollar signs).";
+    public static final String MESSAGE_CONSTRAINTS =
+            "Invalid amount. Enter a number (e.g., 1200) or a range (e.g., 800-1500).\n"
+                    + "Only digits and a single hyphen are allowed (no spaces, commas, or $).\n"
+                    + "For ranges, the left value must be strictly less than the right value.";
 
     /*
      * Accepts:
@@ -49,7 +51,7 @@ public class Budget {
                 try {
                     long min = Long.parseLong(parts[0]);
                     long max = Long.parseLong(parts[1]);
-                    return min <= max;
+                    return min < max;
                 } catch (NumberFormatException e) {
                     return false;
                 }

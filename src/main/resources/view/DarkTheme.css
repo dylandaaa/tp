@@ -49,6 +49,12 @@
     -fx-padding: 5;
     -fx-border-width: 0;
 }
+.scroll-pane#detailsScroll,
+.scroll-pane#detailsScroll .viewport,
+.scroll-pane#detailsScroll .content {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
 .result-display {
     -fx-text-fill: -app-ink;
     -fx-font-size: 14pt;
@@ -177,14 +183,14 @@
 #tags .label {
     -fx-background-color: #FFFEFD;
     -fx-text-fill: #7A5C55;
-    -fx-padding: 8 14;
+    -fx-padding: 6 10;
     -fx-background-radius: 18;
     -fx-border-radius: 18;
     -fx-border-color: rgba(0,0,0,0.08);
     -fx-border-width: 1;
     -fx-font-size: 13;
     -fx-wrap-text: true;
-    -fx-max-width: 180;
+    -fx-max-width: 200;
     -fx-line-spacing: 1.3;
     -fx-text-alignment: center;
 }
@@ -328,4 +334,55 @@
 
 .scroll-pane > .viewport {
     -fx-background-color: transparent;
+}
+
+.text-area.command-input {
+  -fx-font-size: 13pt;
+  -fx-padding: 0;
+}
+.text-area.command-input .content {
+  -fx-padding: 6 10 6 6;
+}
+
+.text-area.command-input .scroll-pane .scroll-bar:vertical   { -fx-pref-width: 10; }
+.text-area.command-input .scroll-pane .scroll-bar:horizontal { -fx-pref-height: 10; }
+.text-area.command-input .scroll-pane .scroll-bar { -fx-opacity: 1.0; }
+
+.text-area.command-input .scroll-pane .scroll-bar .track {
+  -fx-background-color: #F9E6E8 !important;
+  -fx-background-insets: 0;
+  -fx-background-radius: 999;
+  -fx-border-color: -app-border;
+  -fx-border-width: 1;
+  -fx-border-radius: 999;
+}
+.text-area.command-input .scroll-pane .scroll-bar .thumb {
+  -fx-background-color: #D8A8A8 !important;
+  -fx-background-insets: 1;
+  -fx-background-radius: 999;
+  -fx-border-color: transparent;
+  -fx-border-radius: 999;
+  -fx-opacity: 1;
+  -fx-min-height: 14px;
+  -fx-min-width: 14px;
+}
+.text-area.command-input .scroll-pane .scroll-bar .thumb:hover   { -fx-background-color: #C98C8C !important; }
+.text-area.command-input .scroll-pane .scroll-bar .thumb:pressed { -fx-background-color: derive(#C98C8C, -12%) !important; }
+
+.text-area.command-input .scroll-pane .corner { -fx-background-color: white !important; }
+
+.text-area.command-input .scroll-pane .increment-button,
+.text-area.command-input .scroll-pane .decrement-button,
+.text-area.command-input .scroll-pane .increment-arrow,
+.text-area.command-input .scroll-pane .decrement-arrow {
+  -fx-padding: 0;
+  -fx-background-color: transparent;
+  -fx-shape: null;
+  -fx-opacity: 0;
+  -fx-max-width: 0;
+  -fx-max-height: 0;
+  -fx-pref-width: 0;
+  -fx-pref-height: 0;
+  -fx-min-width: 0;
+  -fx-min-height: 0;
 }

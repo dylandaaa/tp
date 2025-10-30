@@ -7,20 +7,20 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <ScrollPane hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" fitToWidth="true"
-                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <ScrollPane fx:id="detailsScroll" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+                    AnchorPane.topAnchor="10.0" AnchorPane.rightAnchor="10.0"
+                    AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
             <content>
-                <VBox spacing="8.0" styleClass="scroll-pane-content">
-                    <Label fx:id="name" styleClass="cell_huge_label" />
-                    <Label fx:id="type" styleClass="cell_bigger_label" />
-                    <Label fx:id="tagsLine" styleClass="cell_bigger_label" wrapText="true"/>
-                    <Label fx:id="phone" styleClass="cell_bigger_label" />
-                    <Label fx:id="email" styleClass="cell_bigger_label" />
-                    <Label fx:id="address" styleClass="cell_bigger_label" />
-                    <Label fx:id="weddingDate" styleClass="cell_bigger_label" />
-                    <Label fx:id="price" styleClass="cell_bigger_label" />
-                    <Label fx:id="budget" styleClass="cell_bigger_label" />
+                <VBox spacing="8.0" fillWidth="true" styleClass="scroll-pane-content">
+                    <Label fx:id="name" styleClass="cell_huge_label" wrapText="true" maxWidth="Infinity" />
+                    <Label fx:id="type" styleClass="cell_bigger_label" wrapText="true" maxWidth="Infinity" />
+                    <Label fx:id="tagsLine" styleClass="cell_bigger_label" wrapText="true" maxWidth="Infinity" />
+                    <Label fx:id="phone" styleClass="cell_bigger_label" wrapText="true" maxWidth="Infinity" />
+                    <Label fx:id="email" styleClass="cell_bigger_label" wrapText="true" maxWidth="Infinity" />
+                    <Label fx:id="address" styleClass="cell_bigger_label" wrapText="true" maxWidth="Infinity" />
+                    <Label fx:id="weddingDate" styleClass="cell_bigger_label" wrapText="true" maxWidth="Infinity" />
+                    <Label fx:id="price" styleClass="cell_bigger_label" wrapText="true" maxWidth="Infinity" />
+                    <Label fx:id="budget" styleClass="cell_bigger_label" wrapText="true" maxWidth="Infinity" />
                     <Label fx:id="linkedPersonsLine" styleClass="cell_bigger_label" wrapText="true" maxWidth="Infinity"/>
                 </VBox>
             </content>

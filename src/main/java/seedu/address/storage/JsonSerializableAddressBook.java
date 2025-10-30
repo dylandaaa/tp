@@ -87,7 +87,7 @@ class JsonSerializableAddressBook {
                     // Create updated person with links
                     Person updatedPerson;
                     if (person.getType() == PersonType.CLIENT) {
-                        // For clients, use constructor with wedding date
+                        // For clients, use constructor with wedding date and budget
                         updatedPerson = new Person(
                                 person.getName(),
                                 person.getPhone(),
@@ -98,6 +98,7 @@ class JsonSerializableAddressBook {
                                 person.getTags(),
                                 linkedPersons,
                                 person.getPrice().orElse(null),
+                                person.getBudget().orElse(null),
                                 person.getPartner()
                         );
                     } else {

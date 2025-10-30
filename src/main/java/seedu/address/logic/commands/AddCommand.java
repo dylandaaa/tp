@@ -38,12 +38,14 @@ public class AddCommand extends Command {
             + PREFIX_ADDRESS + "ADDRESS "
             + PREFIX_WEDDING_DATE + "DATE "
             + PREFIX_TYPE + "(client|vendor) "
-            + "[" + PREFIX_PARTNER + "PARTNER] "
             + "[" + PREFIX_PRICE + "PRICE] "
             + "[" + PREFIX_BUDGET + "BUDGET] "
+            + "[" + PREFIX_PARTNER + "PARTNER] "
             + "[" + PREFIX_TAG + "TAG]...\n"
-            + "  For clients only: [" + PREFIX_BUDGET + "BUDGET] (e.g., 5000 or 5000-10000)\n"
-            + "  For vendors only: [" + PREFIX_PRICE + "PRICE] (e.g., 1000 or 1000-2000)\n\n"
+            + "  For clients only: " + PREFIX_PARTNER + "PARTNER, [" + PREFIX_BUDGET
+            + "BUDGET] (e.g., 5000 or 5000-10000)\n"
+            + "  For vendors only: [" + PREFIX_PRICE + "PRICE] (e.g., 1000 or 1000-2000), [" + PREFIX_TAG
+            + "TAG]...\n\n"
             + "Example 1 (Client): " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
@@ -64,8 +66,8 @@ public class AddCommand extends Command {
             + PREFIX_TAG + "photographer";
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON =
-            "This person already exists in the address book (same phone number)";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists"
+            + " in the address book (same phone number)";
 
     private final Person toAdd;
 

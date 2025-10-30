@@ -5,24 +5,36 @@ import static java.util.Objects.requireNonNull;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.NameStartsWithPredicate;
 
 /**
- * Finds and lists all persons in address book whose name contains any of the argument keywords.
- * Keyword matching is case insensitive.
+ * Finds and lists all persons whose names contain a word that starts with the given query
+ * (case-insensitive). Also matches a CLIENT's partner name.
  */
 public class FindCommand extends Command {
 
+    /** Primary command word used in the CLI. */
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+    /**
+     * Usage message shown when the command format is invalid.
+     */
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain a word "
+            + "that starts with the given query (case-insensitive). Also matches a CLIENT's partner name.\n"
+            + "Parameters: QUERY\n"
+            + "Examples:\n"
+            + "  " + COMMAND_WORD + " ma  (matches Maria Chen)\n"
+            + "  " + COMMAND_WORD + " ch  (matches Maria Chen)";
 
-    private final NameContainsKeywordsPredicate predicate;
+    private final NameStartsWithPredicate predicate;
 
-    public FindCommand(NameContainsKeywordsPredicate predicate) {
+    /**
+     * Constructs a {@code FindCommand} with the provided word-start predicate.
+     *
+     * @param predicate predicate that returns true when a person's (or CLIENT partner's) name
+     *                  has any word that starts with the query (case-insensitive).
+     */
+    public FindCommand(NameStartsWithPredicate predicate) {
         this.predicate = predicate;
     }
 
@@ -38,17 +50,9 @@ public class FindCommand extends Command {
 
     @Override
     public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof FindCommand)) {
-            return false;
-        }
-
-        FindCommand otherFindCommand = (FindCommand) other;
-        return predicate.equals(otherFindCommand.predicate);
+        return other == this
+                || (other instanceof FindCommand
+                && predicate.equals(((FindCommand) other).predicate));
     }
 
     @Override

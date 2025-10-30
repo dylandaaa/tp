@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Region;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -32,6 +33,19 @@ public class CommandBox extends UiPart<Region> {
 
         // calls #setStyleToDefault() whenever there is a change to the text of the command box.
         commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
+
+        commandTextField.addEventHandler(ScrollEvent.SCROLL, e -> e.consume());
+
+        getRoot().addEventFilter(ScrollEvent.SCROLL, e -> {
+            if (commandTextField.isHover()) {
+                e.consume();
+            }
+        });
+
+        commandTextField.setOnScroll(e -> {
+            commandTextField.setScrollTop(commandTextField.getScrollTop() - e.getDeltaY());
+            e.consume();
+        });
 
         // Handle Enter key to execute command (Shift+Enter for new line)
         commandTextField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {

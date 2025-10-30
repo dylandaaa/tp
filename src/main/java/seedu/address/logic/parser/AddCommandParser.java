@@ -50,7 +50,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_WEDDING_DATE,
                 PREFIX_TAG, PREFIX_TYPE, PREFIX_PRICE, PREFIX_BUDGET, PREFIX_PARTNER);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS)
+        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TYPE)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
@@ -65,18 +65,12 @@ public class AddCommandParser implements Parser<AddCommand> {
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        PersonType type = PersonType.CLIENT;
-
-        if (argMultimap.getValue(PREFIX_TYPE).isPresent()) {
-            String raw = argMultimap.getValue(PREFIX_TYPE).get().trim();
-            String normalised = raw.toLowerCase();
-
-            // Exact message expected by AddCommandParserTest.parse_typeInvalid_failure
-            if (!normalised.equals("client") && !normalised.equals("vendor")) {
-                throw new ParseException(AddCommand.MESSAGE_TYPE_INVALID);
-            }
-            type = PersonType.parse(normalised);
+        String rawType = argMultimap.getValue(PREFIX_TYPE).get().trim();
+        String normalisedType = rawType.toLowerCase();
+        if (!normalisedType.equals("client") && !normalisedType.equals("vendor")) {
+            throw new ParseException(AddCommand.MESSAGE_TYPE_INVALID);
         }
+        PersonType type = PersonType.parse(normalisedType);
 
         // Parse wedding date - required for clients, not allowed for vendors
         WeddingDate weddingDate = null;

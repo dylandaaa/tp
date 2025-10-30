@@ -36,6 +36,7 @@ public class BudgetTest {
         assertFalse(Budget.isValidBudget("100-200-300")); // multiple ranges
         assertFalse(Budget.isValidBudget("12345678901")); // too many digits (>10)
         assertFalse(Budget.isValidBudget("5000-1000")); // invalid range (min > max)
+        assertFalse(Budget.isValidBudget("1000-1000")); // equal min and max
 
         // invalid budgets - with special characters
         assertFalse(Budget.isValidBudget("$1000")); // dollar sign not allowed
@@ -57,7 +58,6 @@ public class BudgetTest {
         assertTrue(Budget.isValidBudget("800-1500")); // simple range
         assertTrue(Budget.isValidBudget("100-200")); // small range
         assertTrue(Budget.isValidBudget("1000-5000")); // medium range
-        assertTrue(Budget.isValidBudget("1000-1000")); // equal min and max (valid)
     }
 
     @Test

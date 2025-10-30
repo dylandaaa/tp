@@ -22,7 +22,7 @@
 
       <HBox spacing="8.0" alignment="CENTER_LEFT">
         <VBox.margin>
-          <javafx.geometry.Insets bottom="16.0" />
+          <javafx.geometry.Insets bottom="3.0" />
         </VBox.margin>
         <Label fx:id="id" styleClass="cell_big_label">
           <minWidth>

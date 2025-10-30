@@ -11,7 +11,6 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.PARTNER_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
@@ -43,7 +42,6 @@ import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
-import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
@@ -216,105 +214,8 @@ public class EditCommandParserTest {
     }
 
     @Test
-    public void parse_typeOnlySpecified_success() {
-        Index targetIndex = INDEX_FIRST_PERSON;
-        String userInput = targetIndex.getOneBased() + TYPE_DESC_VENDOR;
-
-        EditPersonDescriptor descriptor = new EditPersonDescriptor();
-        descriptor.setType(PersonType.VENDOR);
-
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
-        assertParseSuccess(parser, userInput, expectedCommand);
-    }
-
-    @Test
-    public void parse_typeAlongsideOtherFields_success() {
-        Index targetIndex = INDEX_SECOND_PERSON;
-        String userInput = targetIndex.getOneBased()
-                + PHONE_DESC_BOB
-                + EMAIL_DESC_AMY
-                + ADDRESS_DESC_AMY
-                + NAME_DESC_AMY
-                + TAG_DESC_FRIEND
-                + TYPE_DESC_CLIENT;
-
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
-                .withName(VALID_NAME_AMY)
-                .withPhone(VALID_PHONE_BOB)
-                .withEmail(VALID_EMAIL_AMY)
-                .withAddress(VALID_ADDRESS_AMY)
-                .withTags(VALID_TAG_FRIEND)
-                .build();
-        descriptor.setType(PersonType.CLIENT);
-
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
-        assertParseSuccess(parser, userInput, expectedCommand);
-    }
-
-    @Test
-    public void parse_invalidType_failure() {
-        Index targetIndex = INDEX_FIRST_PERSON;
-        String userInput = targetIndex.getOneBased() + INVALID_TYPE_DESC;
-
-        assertParseFailure(parser, userInput, INVALID_TYPE_MESSAGE);
-    }
-
-    @Test
-    public void parse_duplicateType_failure() {
-        Index targetIndex = INDEX_FIRST_PERSON;
-        String userInput = targetIndex.getOneBased() + TYPE_DESC_CLIENT + TYPE_DESC_VENDOR;
-
-        assertParseFailure(parser, userInput,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TYPE));
-    }
-
-    @Test
-    public void parse_typeAndTags_success() {
-        Index targetIndex = INDEX_THIRD_PERSON;
-        String userInput = targetIndex.getOneBased() + TAG_DESC_FRIEND + TYPE_DESC_VENDOR;
-
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
-                .withTags(VALID_TAG_FRIEND)
-                .build();
-        descriptor.setType(PersonType.VENDOR);
-
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
-        assertParseSuccess(parser, userInput, expectedCommand);
-    }
-
-    @Test
-    public void parse_typeWithWhitespaceAndCase_success() {
-        Index targetIndex = INDEX_FIRST_PERSON;
-        String userInput = targetIndex.getOneBased() + " " + PREFIX_TYPE + "  VeNdOr  ";
-
-        EditPersonDescriptor descriptor = new EditPersonDescriptor();
-        descriptor.setType(PersonType.VENDOR);
-
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
-        assertParseSuccess(parser, userInput, expectedCommand);
-    }
-
-    @Test
-    public void parse_changeToClientWithPartner_success() {
-        Index idx = Index.fromOneBased(1);
-        EditPersonDescriptor desc = new EditPersonDescriptorBuilder()
-                .withType(String.valueOf(PersonType.CLIENT))
-                .withPartner("Alex Tan")
-                .withName("Amy Bee")
-                .build();
-
-        String userInput = "1" + TYPE_DESC_CLIENT + PARTNER_DESC_AMY + NAME_DESC_AMY;
-        assertParseSuccess(parser, userInput, new EditCommand(idx, desc));
-    }
-
-    @Test
-    public void parse_changeToVendor_success() {
-        Index idx = Index.fromOneBased(1);
-        EditPersonDescriptor desc = new EditPersonDescriptorBuilder()
-                .withType(PersonType.VENDOR.name().toLowerCase())
-                .build();
-
-        String userInput = "1" + TYPE_DESC_VENDOR;
-        assertParseSuccess(parser, userInput, new EditCommand(idx, desc));
+    public void parse_containsTypePrefix_throwsParseException() {
+        String userInput = "1 type/vendor";
+        assertParseFailure(parser, userInput, EditCommand.MESSAGE_TYPE_IMMUTABLE);
     }
 }
