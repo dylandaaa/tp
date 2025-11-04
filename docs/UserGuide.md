@@ -9,8 +9,34 @@ KnotBook is a desktop app designed exclusively for **wedding planners** to manag
 **Figure 1: Illustration of KnotBook’s Client-Vendor Management Feature**
 ![LinkedUI.png](images/LinkedUI.png)
 
-* Table of Contents
-{:toc}
+
+## Quick Navigation
+
+1. [Quick start](#quick-start)
+   - [Step 1: Install Java](#step-1-install-java)
+   - [Step 2: Download KnotBook](#step-2-download-knotbook)
+   - [Step 3: Run KnotBook](#step-3-run-knotbook)
+   - [Step 4: Start Using KnotBook](#step-4-start-using-knotbook)
+   - [Step 5: Understanding Your Data](#step-5-understanding-your-data)
+2. [Command summary](#command-summary)
+3. [Features](#features)
+   - [Viewing help](#viewing-help--help-)
+   - [Parameter reference](#parameter-reference)
+   - [Adding a contact](#adding-a-contact-add-)
+   - [Listing all contacts](#listing-all-contacts--list-)
+   - [Editing a contact](#editing-a-contact--edit-)
+   - [Finding contacts by name](#finding-contacts-by-name-find-)
+   - [Filtering by category](#filtering-by-category--cat-)
+   - [Linking a vendor to a client](#linking-a-vendor-to-a-client--link-)
+   - [Unlinking a vendor from a client](#unlinking-a-vendor-from-a-client--unlink-)
+   - [Deleting a contact](#deleting-a-contact--delete-)
+   - [Clearing all entries](#clearing-all-entries--clear-)
+   - [Exiting the program](#exiting-the-program--exit-)
+   - [Saving the data](#saving-the-data)
+   - [Editing the data file](#editing-the-data-file)
+4. [FAQ](#faq)
+5. [Known issues](#known-issues)
+
 --------------------------------------------------------------------------------------------------------------------
 ## Quick start
 
@@ -148,8 +174,13 @@ Format: `help`
 ### Parameter reference
 
 * `n/NAME` - Contact name (required)
+<<<<<<< HEAD
+    * Can contain alphanumeric characters, spaces, and special characters like apostrophes (`'`), hyphens (`-`), periods (`.`), and ampersands (`&`)
+=======
     * Can contain alphanumeric characters, spaces, and special characters like periods (`.`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
+>>>>>>> 3cf9ec7e1922cefcb4b29b2d650b30a08372bdee
     * Must start with an alphanumeric character
+    * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
     * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
 * `p/PHONE` - Phone number (required)
     * Singapore context: must be exactly 8 digits (no `+65`, spaces, or symbols)
@@ -175,16 +206,16 @@ Format: `help`
         * `YYYY` ranges from `0000` to `9999` (only four-digit years supported)
     * Example: `15-06-2026` or `2026-06-15`
 * `pr/PARTNER` - Partner name (required, for clients only)
-    * Can contain alphanumeric characters and spaces
+    * Can contain alphanumeric characters, spaces, and special characters like apostrophes (`'`), hyphens (`-`), periods (`.`), ampersands (`&`), and slashes (`/`)
     * Must start with an alphanumeric character
-    * Example: `Jane Wang`
+    * Example: `Jane Wang`, `O'Brien`
 * `price/PRICE` - Vendor pricing (optional, for vendors only)
     * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, and leading zeros will be trimmed)
     * Can be a single value (e.g., `1000`) or range (e.g., `1000-2000`)
     * Range values must be separated by a hyphen with no spaces
     * Maximum value: 9,999,999,999
 * `budget/BUDGET` - Client budget (optional, for clients only)
-    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, and leading zeros will be trimmed)
+    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, leading zeros will be trimmed)
     * Can be a single value (e.g., `5000`) or range (e.g., `5000-10000`)
     * Range values must be separated by a hyphen with no spaces
     * Maximum value: 9,999,999,999
