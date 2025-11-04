@@ -174,11 +174,7 @@ Format: `help`
 ### Parameter reference
 
 * `n/NAME` - Contact name (required)
-<<<<<<< HEAD
     * Can contain alphanumeric characters, spaces, and special characters like apostrophes (`'`), hyphens (`-`), periods (`.`), and ampersands (`&`)
-=======
-    * Can contain alphanumeric characters, spaces, and special characters like periods (`.`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
->>>>>>> 3cf9ec7e1922cefcb4b29b2d650b30a08372bdee
     * Must start with an alphanumeric character
     * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
     * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
@@ -206,7 +202,7 @@ Format: `help`
         * `YYYY` ranges from `0000` to `9999` (only four-digit years supported)
     * Example: `15-06-2026` or `2026-06-15`
 * `pr/PARTNER` - Partner name (required, for clients only)
-    * Can contain alphanumeric characters, spaces, and special characters like apostrophes (`'`), hyphens (`-`), periods (`.`), ampersands (`&`), and slashes (`/`)
+    * Can contain alphanumeric characters, spaces, and special characters like apostrophes (`'`), hyphens (`-`), periods (`.`), and ampersands (`&`)
     * Must start with an alphanumeric character
     * Example: `Jane Wang`, `O'Brien`
 * `price/PRICE` - Vendor pricing (optional, for vendors only)
